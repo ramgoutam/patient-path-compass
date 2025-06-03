@@ -1,5 +1,5 @@
 
-import { House, Calendar, Users, CurrencyDollar, PresentationChart, Gear } from "lucide-react";
+import { House, Calendar, Users, DollarSign, Presentation, Settings } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface SidebarProps {
@@ -11,9 +11,9 @@ const navigation = [
   { name: "Dashboard", href: "dashboard", icon: House },
   { name: "Appointments", href: "appointments", icon: Calendar },
   { name: "Patients", href: "patients", icon: Users },
-  { name: "Billing", href: "billing", icon: CurrencyDollar },
-  { name: "Reports", href: "reports", icon: PresentationChart },
-  { name: "Settings", href: "settings", icon: Gear },
+  { name: "Billing", href: "billing", icon: DollarSign },
+  { name: "Reports", href: "reports", icon: Presentation },
+  { name: "Settings", href: "settings", icon: Settings },
 ];
 
 export function Sidebar({ activeSection, onSectionChange }: SidebarProps) {

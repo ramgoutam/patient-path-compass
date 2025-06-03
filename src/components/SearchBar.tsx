@@ -1,5 +1,5 @@
 
-import { MagnifyingGlass } from "lucide-react";
+import { Search } from "lucide-react";
 
 interface SearchBarProps {
   placeholder: string;
@@ -12,7 +12,7 @@ export function SearchBar({ placeholder, value, onChange }: SearchBarProps) {
     <div className="px-4 py-3">
       <div className="flex w-full items-center rounded-xl bg-slate-100 h-12">
         <div className="text-slate-500 flex items-center justify-center pl-4">
-          <MagnifyingGlass className="h-5 w-5" />
+          <Search className="h-5 w-5" />
         </div>
         <input
           type="text"
