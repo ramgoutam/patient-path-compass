@@ -1,45 +1,40 @@
 import { House, Calendar, Users, DollarSign, FlaskConical, Factory, Package, Settings, LogOut, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-
 interface SidebarProps {
   activeSection: string;
   onSectionChange: (section: string) => void;
   collapsed: boolean;
   onToggleCollapse: () => void;
 }
-
-const navigation = [
-  {
-    name: "Dashboard",
-    href: "dashboard",
-    icon: House
-  }, {
-    name: "Patients",
-    href: "patients",
-    icon: Users
-  }, {
-    name: "Calendar",
-    href: "appointments",
-    icon: Calendar
-  }, {
-    name: "Lab",
-    href: "lab",
-    icon: FlaskConical
-  }, {
-    name: "Manufacturing",
-    href: "manufacturing",
-    icon: Factory
-  }, {
-    name: "Inventory",
-    href: "inventory",
-    icon: Package
-  }, {
-    name: "Settings",
-    href: "settings",
-    icon: Settings
-  }
-];
-
+const navigation = [{
+  name: "Dashboard",
+  href: "dashboard",
+  icon: House
+}, {
+  name: "Patients",
+  href: "patients",
+  icon: Users
+}, {
+  name: "Calendar",
+  href: "appointments",
+  icon: Calendar
+}, {
+  name: "Lab",
+  href: "lab",
+  icon: FlaskConical
+}, {
+  name: "Manufacturing",
+  href: "manufacturing",
+  icon: Factory
+}, {
+  name: "Inventory",
+  href: "inventory",
+  icon: Package
+}, {
+  name: "Settings",
+  href: "settings",
+  icon: Settings
+}];
 export function Sidebar({
   activeSection,
   onSectionChange,
@@ -52,14 +47,10 @@ export function Sidebar({
   const getInitials = (firstName: string, lastName: string) => {
     return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
   };
-  return (
-    <div className={`fixed left-0 top-0 h-screen bg-white border-r border-gray-200 flex flex-col transition-all duration-300 z-10 shadow-sm ${collapsed ? 'w-16' : 'w-72'}`}>
+  return <div className={`fixed left-0 top-0 h-screen bg-white border-r border-gray-200 flex flex-col transition-all duration-300 z-10 shadow-sm ${collapsed ? 'w-16' : 'w-72'}`}>
       {/* Header */}
-      <div className="border-b border-gray-200 p-4">
-        <button 
-          onClick={() => onSectionChange('profile')} 
-          className="flex items-center gap-3 w-full text-left hover:bg-gray-50 rounded-lg p-2 transition-colors duration-200 h-[60px]"
-        >
+      <div className="border-b border-gray-200 p-4 px-[4px]">
+        <button onClick={() => onSectionChange('profile')} className="flex items-center gap-3 w-full text-left hover:bg-gray-50 rounded-lg p-2 transition-colors duration-200 h-[60px]">
           <div className="bg-blue-600 text-white rounded-full size-10 flex-shrink-0 flex items-center justify-center font-semibold text-sm">
             {getInitials("Amelia", "Stone")}
           </div>
@@ -100,6 +91,5 @@ export function Sidebar({
           </span>
         </button>
       </div>
-    </div>
-  );
+    </div>;
 }
