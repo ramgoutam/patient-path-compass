@@ -6,35 +6,37 @@ interface SidebarProps {
   collapsed: boolean;
   onToggleCollapse: () => void;
 }
-const navigation = [{
-  name: "Dashboard",
-  href: "dashboard",
-  icon: House
-}, {
-  name: "Patients",
-  href: "patients",
-  icon: Users
-}, {
-  name: "Calendar",
-  href: "appointments",
-  icon: Calendar
-}, {
-  name: "Lab",
-  href: "lab",
-  icon: FlaskConical
-}, {
-  name: "Manufacturing",
-  href: "manufacturing",
-  icon: Factory
-}, {
-  name: "Inventory",
-  href: "inventory",
-  icon: Package
-}, {
-  name: "Settings",
-  href: "settings",
-  icon: Settings
-}];
+const navigation = [
+  {
+    name: "Dashboard",
+    href: "dashboard",
+    icon: House
+  }, {
+    name: "Patients",
+    href: "patients",
+    icon: Users
+  }, {
+    name: "Calendar",
+    href: "appointments",
+    icon: Calendar
+  }, {
+    name: "Lab",
+    href: "lab",
+    icon: FlaskConical
+  }, {
+    name: "Manufacturing",
+    href: "manufacturing",
+    icon: Factory
+  }, {
+    name: "Inventory",
+    href: "inventory",
+    icon: Package
+  }, {
+    name: "Settings",
+    href: "settings",
+    icon: Settings
+  }
+];
 export function Sidebar({
   activeSection,
   onSectionChange,
@@ -62,17 +64,17 @@ export function Sidebar({
       </div>
       
       {/* Navigation */}
-      <nav className="flex-1 p-4 space-y-1 px-[9px]">
+      <nav className="flex-1 p-4 space-y-2 px-[9px]">
         {navigation.map(item => {
         const isActive = activeSection === item.href;
         return <div key={item.href} className="relative">
-            <button onClick={() => onSectionChange(item.href)} className={cn("flex items-center w-full text-left px-3 py-3 rounded-lg transition-all duration-200", isActive ? "bg-indigo-50 text-indigo-700 border border-indigo-200" : "text-gray-600 hover:bg-gray-50 hover:text-gray-900")} title={collapsed ? item.name : undefined}>
+            <button onClick={() => onSectionChange(item.href)} className={cn("flex items-center w-full text-left px-3 py-4 rounded-lg transition-all duration-200", isActive ? "bg-indigo-50 text-indigo-700 border border-indigo-200" : "text-gray-600 hover:bg-gray-50 hover:text-gray-900")} title={collapsed ? item.name : undefined}>
               <item.icon className="h-5 w-5 flex-shrink-0" />
               <span className={`ml-3 font-medium text-sm transition-all duration-300 ${collapsed ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100'}`}>
                 {item.name}
               </span>
             </button>
-            {isActive && <div className="absolute bottom-1 left-2 right-2 h-1 bg-indigo-600 rounded-full" />}
+            {isActive && <div className="absolute bottom-2 left-2 right-2 h-1 bg-indigo-600 rounded-full" />}
           </div>;
       })}
       </nav>
