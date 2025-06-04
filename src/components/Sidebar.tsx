@@ -26,11 +26,11 @@ export function Sidebar({ activeSection, onSectionChange, collapsed, onToggleCol
   };
 
   return (
-    <div className={`fixed left-0 top-0 h-screen bg-slate-50 p-4 flex flex-col transition-all duration-300 ease-in-out z-10 ${collapsed ? 'w-16' : 'w-80'}`}>
-      <div className="flex flex-col gap-4 flex-1">
+    <div className={`fixed left-0 top-0 h-screen bg-slate-50 flex flex-col transition-all duration-300 ease-in-out z-10 ${collapsed ? 'w-16' : 'w-80'}`}>
+      <div className="flex flex-col gap-4 flex-1 p-4">
         <div className="flex items-center gap-3 overflow-hidden">
           <div
-            className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 flex-shrink-0"
+            className={`bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 flex-shrink-0 transition-all duration-300 ${collapsed ? 'mx-auto' : ''}`}
             style={{
               backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDrGSxRXtO4b-EytuNP0A4LNtrZa0fnukPxY1JRepZLoIOtA5b7EgUNZhv0MEA0EPzq5x6BnfKA2o5b_LtaryFle-MH5Xh9JdM5vq-YA8OQpQp0QnOg0ZFDfJA9c5XkgYCEDn0hNtu_arDZQWlVx_Nr-HgC9PWqy5Zbt7aOBclrO3_6dOwvGw8QirXqaD3vRHpXnm9-VHXjQeQ1ADlJlD5EEWdiparj4dIyPsUvIFJORr6eKf0400EVIgkZbRkmd9InBVAoUO6q53b_")'
             }}
@@ -49,16 +49,26 @@ export function Sidebar({ activeSection, onSectionChange, collapsed, onToggleCol
                 key={item.href}
                 onClick={() => onSectionChange(item.href)}
                 className={cn(
-                  "flex items-center gap-3 px-3 py-2 text-sm font-medium transition-all duration-300 ease-in-out",
-                  collapsed ? "justify-center" : "",
+                  "flex items-center text-sm font-medium transition-all duration-300 ease-in-out relative",
+                  collapsed ? "justify-center px-3 py-3 w-10 h-10 mx-auto" : "gap-3 px-3 py-2",
                   isActive
-                    ? "bg-slate-200 text-slate-900 rounded-full"
-                    : "text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                    ? "text-slate-900" 
+                    : "text-slate-700 hover:text-slate-900"
                 )}
                 title={collapsed ? item.name : undefined}
               >
-                <item.icon className="h-6 w-6 flex-shrink-0" />
-                <span className={`truncate transition-all duration-300 ease-in-out ${collapsed ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100 w-auto'}`}>
+                {isActive && (
+                  <div 
+                    className={cn(
+                      "absolute bg-slate-200 transition-all duration-300 ease-in-out",
+                      collapsed 
+                        ? "inset-0 rounded-full" 
+                        : "inset-0 rounded-full"
+                    )}
+                  />
+                )}
+                <item.icon className="h-6 w-6 flex-shrink-0 relative z-10" />
+                <span className={`truncate transition-all duration-300 ease-in-out relative z-10 ${collapsed ? 'opacity-0 w-0 overflow-hidden absolute' : 'opacity-100 w-auto'}`}>
                   {item.name}
                 </span>
               </button>
@@ -68,13 +78,13 @@ export function Sidebar({ activeSection, onSectionChange, collapsed, onToggleCol
       </div>
       
       {/* Toggle and Logout buttons at bottom */}
-      <div className="mt-auto pt-4 border-t border-slate-200 space-y-2">
+      <div className="p-4 border-t border-slate-200 space-y-2">
         {/* Toggle button */}
         <button
           onClick={onToggleCollapse}
           className={cn(
-            "flex items-center gap-3 px-3 py-2 text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-700 transition-all duration-300 ease-in-out w-full rounded-md",
-            collapsed ? "justify-center" : ""
+            "flex items-center text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-700 transition-all duration-300 ease-in-out rounded-md",
+            collapsed ? "justify-center px-3 py-3 w-10 h-10 mx-auto" : "gap-3 px-3 py-2 w-full"
           )}
           title={collapsed ? (collapsed ? "Expand" : "Collapse") : undefined}
         >
@@ -83,7 +93,7 @@ export function Sidebar({ activeSection, onSectionChange, collapsed, onToggleCol
           ) : (
             <PanelLeftClose className="h-5 w-5 flex-shrink-0" />
           )}
-          <span className={`truncate transition-all duration-300 ease-in-out ${collapsed ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100 w-auto'}`}>
+          <span className={`truncate transition-all duration-300 ease-in-out ${collapsed ? 'opacity-0 w-0 overflow-hidden absolute' : 'opacity-100 w-auto'}`}>
             {collapsed ? "Expand" : "Collapse"}
           </span>
         </button>
@@ -92,13 +102,13 @@ export function Sidebar({ activeSection, onSectionChange, collapsed, onToggleCol
         <button
           onClick={handleLogout}
           className={cn(
-            "flex items-center gap-3 px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50 hover:text-red-700 transition-all duration-300 ease-in-out w-full rounded-md",
-            collapsed ? "justify-center" : ""
+            "flex items-center text-sm font-medium text-red-600 hover:bg-red-50 hover:text-red-700 transition-all duration-300 ease-in-out rounded-md",
+            collapsed ? "justify-center px-3 py-3 w-10 h-10 mx-auto" : "gap-3 px-3 py-2 w-full"
           )}
           title={collapsed ? "Logout" : undefined}
         >
           <LogOut className="h-5 w-5 flex-shrink-0" />
-          <span className={`truncate transition-all duration-300 ease-in-out ${collapsed ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100 w-auto'}`}>
+          <span className={`truncate transition-all duration-300 ease-in-out ${collapsed ? 'opacity-0 w-0 overflow-hidden absolute' : 'opacity-100 w-auto'}`}>
             Logout
           </span>
         </button>
