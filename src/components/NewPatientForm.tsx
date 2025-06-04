@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PhoneInput } from "./PhoneInput";
+import { AddressAutocomplete } from "./AddressAutocomplete";
 
 interface NewPatientFormProps {
   onSubmit: (patientData: any) => void;
@@ -100,45 +100,13 @@ export function NewPatientForm({ onSubmit, onCancel }: NewPatientFormProps) {
             onChange={(value) => handleInputChange('phone', value)}
           />
 
-          <div className="space-y-4">
-            <Label className="text-base font-medium">Address</Label>
-            <div>
-              <Label htmlFor="street">Street Address</Label>
-              <Input
-                id="street"
-                value={formData.street}
-                onChange={(e) => handleInputChange('street', e.target.value)}
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
-                <Label htmlFor="city">City</Label>
-                <Input
-                  id="city"
-                  value={formData.city}
-                  onChange={(e) => handleInputChange('city', e.target.value)}
-                />
-              </div>
-              <div>
-                <Label htmlFor="state">State</Label>
-                <Input
-                  id="state"
-                  placeholder="CA"
-                  value={formData.state}
-                  onChange={(e) => handleInputChange('state', e.target.value)}
-                />
-              </div>
-            </div>
-            <div>
-              <Label htmlFor="zipCode">ZIP Code</Label>
-              <Input
-                id="zipCode"
-                placeholder="12345"
-                value={formData.zipCode}
-                onChange={(e) => handleInputChange('zipCode', e.target.value)}
-              />
-            </div>
-          </div>
+          <AddressAutocomplete
+            street={formData.street}
+            city={formData.city}
+            state={formData.state}
+            zipCode={formData.zipCode}
+            onAddressChange={handleInputChange}
+          />
 
           <div>
             <Label className="text-base font-medium">Gender</Label>
