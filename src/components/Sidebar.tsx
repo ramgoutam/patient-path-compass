@@ -62,7 +62,7 @@ export function Sidebar({
       </div>
       
       {/* Navigation */}
-      <nav className="flex-1 p-4 space-y-1">
+      <nav className="flex-1 p-4 space-y-1 px-[5px]">
         {navigation.map(item => {
         const isActive = activeSection === item.href;
         return <button key={item.href} onClick={() => onSectionChange(item.href)} className={cn("flex items-center w-full text-left px-3 py-2.5 rounded-lg transition-all duration-200 relative", isActive ? "bg-indigo-50 text-indigo-700 border border-indigo-200" : "text-gray-600 hover:bg-gray-50 hover:text-gray-900")} title={collapsed ? item.name : undefined}>
