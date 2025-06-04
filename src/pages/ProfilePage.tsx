@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { User, Save, X } from "lucide-react";
+import { User, Save, X, Camera } from "lucide-react";
 
 export function ProfilePage() {
   const [isEditing, setIsEditing] = useState(false);
@@ -14,10 +14,32 @@ export function ProfilePage() {
     lastName: "Stone",
     email: "amelia.stone@dentistry.com",
     phone: "+1 (555) 123-4567",
-    role: "General Dentistry"
+    role: "General Dentistry",
+    profileImage: ""
   });
 
   const [editedProfile, setEditedProfile] = useState({ ...profile });
+
+  const getInitials = (firstName: string, lastName: string) => {
+    return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
+  };
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const imageUrl = e.target?.result as string;
+        if (isEditing) {
+          setEditedProfile(prev => ({ ...prev, profileImage: imageUrl }));
+        } else {
+          setProfile(prev => ({ ...prev, profileImage: imageUrl }));
+          setEditedProfile(prev => ({ ...prev, profileImage: imageUrl }));
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
   const handleSave = () => {
     setProfile({ ...editedProfile });
@@ -37,20 +59,37 @@ export function ProfilePage() {
     }));
   };
 
+  const currentProfile = isEditing ? editedProfile : profile;
+
   return (
     <div className="p-6 max-w-2xl mx-auto">
       <Card>
         <CardHeader className="text-center">
-          <div className="flex justify-center mb-4">
+          <div className="flex justify-center mb-4 relative">
             <Avatar className="w-24 h-24">
-              <AvatarImage 
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrGSxRXtO4b-EytuNP0A4LNtrZa0fnukPxY1JRepZLoIOtA5b7EgUNZhv0MEA0EPzq5x6BnfKA2o5b_LtaryFle-MH5Xh9JdM5vq-YA8OQpQp0QnOg0ZFDfJA9c5XkgYCEDn0hNtu_arDZQWlVx_Nr-HgC9PWqy5Zbt7aOBclrO3_6dOwvGw8QirXqaD3vRHpXnm9-VHXjQeQ1ADlJlD5EEWdiparj4dIyPsUvIFJORr6eKf0400EVIgkZbRkmd9InBVAoUO6q53b_" 
-                alt="Profile" 
-              />
-              <AvatarFallback>
-                <User className="w-12 h-12" />
+              {currentProfile.profileImage ? (
+                <AvatarImage 
+                  src={currentProfile.profileImage} 
+                  alt="Profile" 
+                />
+              ) : null}
+              <AvatarFallback className="text-2xl font-semibold bg-slate-200 text-slate-700">
+                {getInitials(currentProfile.firstName, currentProfile.lastName)}
               </AvatarFallback>
             </Avatar>
+            <label 
+              htmlFor="profile-upload" 
+              className="absolute -bottom-1 -right-1 bg-primary text-primary-foreground rounded-full p-2 cursor-pointer hover:bg-primary/90 transition-colors"
+            >
+              <Camera className="w-4 h-4" />
+            </label>
+            <input
+              id="profile-upload"
+              type="file"
+              accept="image/*"
+              onChange={handleImageUpload}
+              className="hidden"
+            />
           </div>
           <CardTitle className="text-2xl">Profile Settings</CardTitle>
         </CardHeader>
