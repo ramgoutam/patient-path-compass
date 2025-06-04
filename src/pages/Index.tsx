@@ -21,7 +21,9 @@ const Index = () => {
       case "appointments":
         return <AppointmentsPage />;
       case "patients":
-        return <PatientsPage />;
+        return <PatientsPage onNavigateToProfile={() => setActiveSection("patient-profile")} />;
+      case "patient-profile":
+        return <PatientProfilePage />;
       case "lab":
         return <LabPage />;
       case "manufacturing":

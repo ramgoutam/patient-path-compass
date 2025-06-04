@@ -4,13 +4,30 @@ import { PageHeader } from "@/components/PageHeader";
 import { SearchBar } from "@/components/SearchBar";
 import { PatientTabs } from "@/components/PatientTabs";
 import { PatientsTable } from "@/components/PatientsTable";
+import { NewPatientForm } from "@/components/NewPatientForm";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
-export function PatientsPage() {
+interface PatientsPageProps {
+  onNavigateToProfile?: () => void;
+}
+
+export function PatientsPage({ onNavigateToProfile }: PatientsPageProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState("all");
+  const [showNewPatientForm, setShowNewPatientForm] = useState(false);
 
   const handleNewPatient = () => {
-    console.log("Creating new patient...");
+    setShowNewPatientForm(true);
+  };
+
+  const handleFormSubmit = (patientData: any) => {
+    console.log("New patient data:", patientData);
+    setShowNewPatientForm(false);
+    // Here you would typically save the patient data
+  };
+
+  const handleFormCancel = () => {
+    setShowNewPatientForm(false);
   };
 
   return (
@@ -43,6 +60,15 @@ export function PatientsPage() {
           />
         </div>
       </div>
+
+      <Dialog open={showNewPatientForm} onOpenChange={setShowNewPatientForm}>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+          <NewPatientForm 
+            onSubmit={handleFormSubmit}
+            onCancel={handleFormCancel}
+          />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
