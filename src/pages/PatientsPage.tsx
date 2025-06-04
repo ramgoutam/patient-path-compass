@@ -14,7 +14,7 @@ export function PatientsPage() {
   };
 
   return (
-    <div className="flex flex-col max-w-full flex-1">
+    <div className="flex flex-col max-w-full flex-1 bg-gradient-to-br from-white/50 to-blue-50/30">
       <PageHeader 
         title="Patients" 
         action={{
@@ -22,19 +22,21 @@ export function PatientsPage() {
           onClick: handleNewPatient
         }}
       />
-      <SearchBar 
-        placeholder="Search patients"
-        value={searchTerm}
-        onChange={setSearchTerm}
-      />
-      <PatientTabs 
-        activeTab={activeTab}
-        onTabChange={setActiveTab}
-      />
-      <PatientsTable 
-        searchTerm={searchTerm}
-        activeTab={activeTab}
-      />
+      <div className="p-6">
+        <SearchBar 
+          placeholder="Search patients"
+          value={searchTerm}
+          onChange={setSearchTerm}
+        />
+        <PatientTabs 
+          activeTab={activeTab}
+          onTabChange={setActiveTab}
+        />
+        <PatientsTable 
+          searchTerm={searchTerm}
+          activeTab={activeTab}
+        />
+      </div>
     </div>
   );
 }
