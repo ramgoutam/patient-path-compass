@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { PhoneInput } from "./PhoneInput";
 
 interface NewPatientFormProps {
   onSubmit: (patientData: any) => void;
@@ -63,17 +64,11 @@ export function NewPatientForm({ onSubmit, onCancel }: NewPatientFormProps) {
             </div>
           </div>
 
-          <div>
-            <Label htmlFor="phone">Phone Number (with country code)</Label>
-            <Input
-              id="phone"
-              type="tel"
-              placeholder="+1 (555) 123-4567"
-              value={formData.phone}
-              onChange={(e) => handleInputChange('phone', e.target.value)}
-              required
-            />
-          </div>
+          <PhoneInput
+            value={formData.phone}
+            onChange={(value) => handleInputChange('phone', value)}
+            required
+          />
 
           <div className="space-y-4">
             <Label className="text-base font-medium">Address</Label>
