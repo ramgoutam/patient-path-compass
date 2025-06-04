@@ -11,6 +11,7 @@ import { SettingsPage } from "./SettingsPage";
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState("patients");
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   const renderContent = () => {
     switch (activeSection) {
@@ -34,9 +35,14 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen flex w-full bg-slate-50">
-      <Sidebar activeSection={activeSection} onSectionChange={setActiveSection} />
-      <main className="flex-1 bg-white">
+    <div className="min-h-screen flex w-full bg-slate-50 overflow-hidden">
+      <Sidebar 
+        activeSection={activeSection} 
+        onSectionChange={setActiveSection} 
+        collapsed={sidebarCollapsed}
+        onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
+      />
+      <main className={`flex-1 bg-white overflow-auto transition-all duration-300 ${sidebarCollapsed ? 'ml-16' : 'ml-80'}`}>
         {renderContent()}
       </main>
     </div>

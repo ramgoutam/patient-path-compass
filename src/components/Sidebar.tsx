@@ -1,10 +1,12 @@
 
-import { House, Calendar, Users, DollarSign, FlaskConical, Factory, Package, Settings, LogOut } from "lucide-react";
+import { House, Calendar, Users, DollarSign, FlaskConical, Factory, Package, Settings, LogOut, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface SidebarProps {
   activeSection: string;
   onSectionChange: (section: string) => void;
+  collapsed: boolean;
+  onToggleCollapse: () => void;
 }
 
 const navigation = [
@@ -17,26 +19,38 @@ const navigation = [
   { name: "Settings", href: "settings", icon: Settings },
 ];
 
-export function Sidebar({ activeSection, onSectionChange }: SidebarProps) {
+export function Sidebar({ activeSection, onSectionChange, collapsed, onToggleCollapse }: SidebarProps) {
   const handleLogout = () => {
     console.log("Logging out...");
     // Add logout logic here
   };
 
   return (
-    <div className="w-80 bg-slate-50 min-h-screen p-4 flex flex-col">
+    <div className={`fixed left-0 top-0 h-screen bg-slate-50 p-4 flex flex-col transition-all duration-300 z-10 ${collapsed ? 'w-16' : 'w-80'}`}>
       <div className="flex flex-col gap-4 flex-1">
-        <div className="flex gap-3">
+        <div className="flex items-center gap-3 relative">
           <div
-            className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10"
+            className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 flex-shrink-0"
             style={{
               backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDrGSxRXtO4b-EytuNP0A4LNtrZa0fnukPxY1JRepZLoIOtA5b7EgUNZhv0MEA0EPzq5x6BnfKA2o5b_LtaryFle-MH5Xh9JdM5vq-YA8OQpQp0QnOg0ZFDfJA9c5XkgYCEDn0hNtu_arDZQWlVx_Nr-HgC9PWqy5Zbt7aOBclrO3_6dOwvGw8QirXqaD3vRHpXnm9-VHXjQeQ1ADlJlD5EEWdiparj4dIyPsUvIFJORr6eKf0400EVIgkZbRkmd9InBVAoUO6q53b_")'
             }}
           />
-          <div className="flex flex-col">
-            <h1 className="text-slate-900 text-base font-medium leading-normal">Dr. Amelia Stone</h1>
-            <p className="text-slate-600 text-sm font-normal leading-normal">General Dentistry</p>
-          </div>
+          {!collapsed && (
+            <div className="flex flex-col min-w-0">
+              <h1 className="text-slate-900 text-base font-medium leading-normal truncate">Dr. Amelia Stone</h1>
+              <p className="text-slate-600 text-sm font-normal leading-normal truncate">General Dentistry</p>
+            </div>
+          )}
+          <button
+            onClick={onToggleCollapse}
+            className="absolute -right-3 top-1/2 -translate-y-1/2 bg-slate-200 hover:bg-slate-300 rounded-full p-1 transition-colors"
+          >
+            {collapsed ? (
+              <ChevronRight className="h-4 w-4 text-slate-600" />
+            ) : (
+              <ChevronLeft className="h-4 w-4 text-slate-600" />
+            )}
+          </button>
         </div>
         
         <nav className="flex flex-col gap-2 flex-1">
@@ -48,13 +62,15 @@ export function Sidebar({ activeSection, onSectionChange }: SidebarProps) {
                 onClick={() => onSectionChange(item.href)}
                 className={cn(
                   "flex items-center gap-3 px-3 py-2 text-sm font-medium transition-colors",
+                  collapsed ? "justify-center" : "",
                   isActive
                     ? "bg-slate-200 text-slate-900 rounded-full"
                     : "text-slate-700 hover:bg-slate-100 hover:text-slate-900"
                 )}
+                title={collapsed ? item.name : undefined}
               >
-                <item.icon className="h-6 w-6" />
-                <span>{item.name}</span>
+                <item.icon className="h-6 w-6 flex-shrink-0" />
+                {!collapsed && <span className="truncate">{item.name}</span>}
               </button>
             );
           })}
@@ -65,10 +81,14 @@ export function Sidebar({ activeSection, onSectionChange }: SidebarProps) {
       <div className="mt-auto pt-4 border-t border-slate-200">
         <button
           onClick={handleLogout}
-          className="flex items-center gap-3 px-3 py-2 text-sm font-medium text-slate-700 hover:bg-slate-100 hover:text-slate-900 transition-colors w-full"
+          className={cn(
+            "flex items-center gap-3 px-3 py-2 text-sm font-medium text-red-600 hover:bg-red-50 hover:text-red-700 transition-colors w-full",
+            collapsed ? "justify-center" : ""
+          )}
+          title={collapsed ? "Logout" : undefined}
         >
-          <LogOut className="h-6 w-6" />
-          <span>Logout</span>
+          <LogOut className="h-6 w-6 flex-shrink-0" />
+          {!collapsed && <span className="truncate">Logout</span>}
         </button>
       </div>
     </div>
