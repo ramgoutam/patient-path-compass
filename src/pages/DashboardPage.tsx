@@ -49,14 +49,14 @@ export function DashboardPage() {
         </div>
 
         {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 h-[600px]">
           {/* Today's Appointments */}
           <div className="lg:col-span-2">
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
-              <div className="p-6 border-b border-slate-200">
+            <div className="bg-white rounded-xl border border-slate-200 shadow-sm h-full flex flex-col">
+              <div className="p-6 border-b border-slate-200 flex-shrink-0">
                 <h3 className="text-slate-900 text-lg font-semibold">Today's Appointments</h3>
               </div>
-              <div className="p-6">
+              <div className="p-6 flex-1 overflow-y-auto">
                 <div className="space-y-4">
                   {recentAppointments.map((appointment, index) => (
                     <div key={index} className="flex items-center justify-between p-4 bg-slate-50 rounded-lg">
@@ -88,9 +88,10 @@ export function DashboardPage() {
             </div>
           </div>
 
-          {/* Alerts & Notifications */}
-          <div className="space-y-6">
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
+          {/* Right Sidebar - Fixed notifications, scrollable quick actions */}
+          <div className="space-y-6 h-full flex flex-col">
+            {/* Alerts & Notifications - Fixed */}
+            <div className="bg-white rounded-xl border border-slate-200 shadow-sm flex-shrink-0">
               <div className="p-6 border-b border-slate-200">
                 <h3 className="text-slate-900 text-lg font-semibold">Alerts & Notifications</h3>
               </div>
@@ -98,7 +99,7 @@ export function DashboardPage() {
                 <div className="space-y-3">
                   {alerts.map((alert, index) => (
                     <div key={index} className="flex items-start space-x-3 p-3 bg-slate-50 rounded-lg">
-                      <AlertCircle className={`h-5 w-5 mt-0.5 ${
+                      <AlertCircle className={`h-5 w-5 mt-0.5 flex-shrink-0 ${
                         alert.type === 'warning' ? 'text-yellow-500' :
                         alert.type === 'alert' ? 'text-red-500' : 'text-blue-500'
                       }`} />
@@ -109,21 +110,32 @@ export function DashboardPage() {
               </div>
             </div>
 
-            {/* Quick Actions */}
-            <div className="bg-white rounded-xl border border-slate-200 shadow-sm">
-              <div className="p-6 border-b border-slate-200">
+            {/* Quick Actions - Scrollable */}
+            <div className="bg-white rounded-xl border border-slate-200 shadow-sm flex-1 flex flex-col min-h-0">
+              <div className="p-6 border-b border-slate-200 flex-shrink-0">
                 <h3 className="text-slate-900 text-lg font-semibold">Quick Actions</h3>
               </div>
-              <div className="p-6 space-y-3">
-                <button className="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-lg transition-colors">
-                  <p className="text-slate-900 font-medium">Schedule New Appointment</p>
-                </button>
-                <button className="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-lg transition-colors">
-                  <p className="text-slate-900 font-medium">Add New Patient</p>
-                </button>
-                <button className="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-lg transition-colors">
-                  <p className="text-slate-900 font-medium">Generate Report</p>
-                </button>
+              <div className="p-6 flex-1 overflow-y-auto">
+                <div className="space-y-3">
+                  <button className="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-lg transition-colors">
+                    <p className="text-slate-900 font-medium">Schedule New Appointment</p>
+                  </button>
+                  <button className="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-lg transition-colors">
+                    <p className="text-slate-900 font-medium">Add New Patient</p>
+                  </button>
+                  <button className="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-lg transition-colors">
+                    <p className="text-slate-900 font-medium">Generate Report</p>
+                  </button>
+                  <button className="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-lg transition-colors">
+                    <p className="text-slate-900 font-medium">Check Inventory</p>
+                  </button>
+                  <button className="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-lg transition-colors">
+                    <p className="text-slate-900 font-medium">Lab Orders</p>
+                  </button>
+                  <button className="w-full text-left p-3 bg-slate-50 hover:bg-slate-100 rounded-lg transition-colors">
+                    <p className="text-slate-900 font-medium">Manufacturing Queue</p>
+                  </button>
+                </div>
               </div>
             </div>
           </div>
