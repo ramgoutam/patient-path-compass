@@ -1,4 +1,3 @@
-
 import { House, Calendar, Users, DollarSign, FlaskConical, Factory, Package, Settings, LogOut, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -53,15 +52,18 @@ export function Sidebar({
   return (
     <div className={`fixed left-0 top-0 h-screen bg-slate-50 flex flex-col transition-all duration-700 ease-in-out z-10 ${collapsed ? 'w-16' : 'w-80'}`}>
       <div className="flex flex-col gap-4 flex-1 p-4 rounded-xl px-[12px] py-[21px] my-0 mx-0">
-        <div className="flex items-center gap-3 overflow-hidden">
+        <button 
+          onClick={() => onSectionChange('profile')}
+          className="flex items-center gap-3 overflow-hidden hover:bg-slate-100 rounded-lg p-2 transition-colors duration-200"
+        >
           <div className={`bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 flex-shrink-0 transition-all duration-700 ease-in-out ${collapsed ? 'mx-auto' : ''}`} style={{
             backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDrGSxRXtO4b-EytuNP0A4LNtrZa0fnukPxY1JRepZLoIOtA5b7EgUNZhv0MEA0EPzq5x6BnfKA2o5b_LtaryFle-MH5Xh9JdM5vq-YA8OQpQp0QnOg0ZFDfJA9c5XkgYCEDn0hNtu_arDZQWlVx_Nr-HgC9PWqy5Zbt7aOBclrO3_6dOwvGw8QirXqaD3vRHpXnm9-VHXjQeQ1ADlJlD5EEWdiparj4dIyPsUvIFJORr6eKf0400EVIgkZbRkmd9InBVAoUO6q53b_")'
           }} />
-          <div className={`flex flex-col min-w-0 transition-all duration-700 ease-in-out ${collapsed ? 'opacity-0 max-w-0 overflow-hidden' : 'opacity-100 max-w-none delay-200'}`}>
+          <div className={`flex flex-col min-w-0 transition-all duration-700 ease-in-out ${collapsed ? 'opacity-0 max-w-0 overflow-hidden' : 'opacity-100 max-w-none delay-100'}`}>
             <h1 className="text-slate-900 text-base font-medium leading-normal truncate">Dr. Amelia Stone</h1>
             <p className="text-slate-600 text-sm font-normal leading-normal truncate">General Dentistry</p>
           </div>
-        </div>
+        </button>
         
         <nav className="flex flex-col gap-2 flex-1">
           {navigation.map(item => {

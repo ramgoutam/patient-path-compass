@@ -8,6 +8,7 @@ import { LabPage } from "./LabPage";
 import { ManufacturingPage } from "./ManufacturingPage";
 import { InventoryPage } from "./InventoryPage";
 import { SettingsPage } from "./SettingsPage";
+import { ProfilePage } from "./ProfilePage";
 
 const Index = () => {
   const [activeSection, setActiveSection] = useState("patients");
@@ -29,6 +30,8 @@ const Index = () => {
         return <InventoryPage />;
       case "settings":
         return <SettingsPage />;
+      case "profile":
+        return <ProfilePage />;
       default:
         return <PatientsPage />;
     }
