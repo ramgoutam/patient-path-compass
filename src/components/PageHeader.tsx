@@ -12,18 +12,17 @@ interface PageHeaderProps {
 
 export function PageHeader({ title, description, action }: PageHeaderProps) {
   return (
-    <div className="flex flex-wrap justify-between gap-3 p-4">
-      <div className="flex min-w-72 flex-col gap-3">
-        <h1 className="text-slate-900 text-3xl font-bold leading-tight">{title}</h1>
+    <div className="flex items-center justify-between p-6">
+      <div>
+        <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
         {description && (
-          <p className="text-slate-600 text-sm font-normal leading-normal">{description}</p>
+          <p className="text-gray-600 mt-1">{description}</p>
         )}
       </div>
       {action && (
         <Button
           onClick={action.onClick}
-          className="bg-slate-200 text-slate-900 hover:bg-slate-300 rounded-full px-4 h-8"
-          variant="secondary"
+          className="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg font-medium transition-colors duration-200"
         >
           {action.label}
         </Button>

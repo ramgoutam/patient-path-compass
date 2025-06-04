@@ -1,227 +1,136 @@
 
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { PageHeader } from "@/components/PageHeader";
+import { Camera, Mail, Phone, MapPin, Calendar, Award } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { User, Save, X, Camera, Sparkles } from "lucide-react";
 
 export function ProfilePage() {
-  const [isEditing, setIsEditing] = useState(false);
-  const [profile, setProfile] = useState({
-    firstName: "Amelia",
-    lastName: "Stone",
-    email: "amelia.stone@dentistry.com",
-    phone: "+1 (555) 123-4567",
-    role: "General Dentistry",
-    profileImage: ""
-  });
-
-  const [editedProfile, setEditedProfile] = useState({ ...profile });
-
-  const getInitials = (firstName: string, lastName: string) => {
-    return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
-  };
+  const [profileImage, setProfileImage] = useState<string | null>(null);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        const imageUrl = e.target?.result as string;
-        if (isEditing) {
-          setEditedProfile(prev => ({ ...prev, profileImage: imageUrl }));
-        } else {
-          setProfile(prev => ({ ...prev, profileImage: imageUrl }));
-          setEditedProfile(prev => ({ ...prev, profileImage: imageUrl }));
-        }
+        setProfileImage(e.target?.result as string);
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const handleSave = () => {
-    setProfile({ ...editedProfile });
-    setIsEditing(false);
-    console.log("Profile saved:", editedProfile);
+  const getInitials = (firstName: string, lastName: string) => {
+    return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
   };
-
-  const handleCancel = () => {
-    setEditedProfile({ ...profile });
-    setIsEditing(false);
-  };
-
-  const handleInputChange = (field: string, value: string) => {
-    setEditedProfile(prev => ({
-      ...prev,
-      [field]: value
-    }));
-  };
-
-  const currentProfile = isEditing ? editedProfile : profile;
 
   return (
-    <div className="p-8 max-w-3xl mx-auto">
-      <div className="mb-8">
-        <div className="flex items-center gap-3 mb-2">
-          <Sparkles className="h-6 w-6 text-blue-600" />
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
-            Profile Settings
-          </h1>
-        </div>
-        <p className="text-gray-600">Manage your personal information and preferences</p>
+    <div className="flex flex-col h-full bg-gray-50">
+      <div className="bg-white border-b border-gray-200">
+        <PageHeader title="Profile" />
       </div>
-
-      <Card className="shadow-xl border-0 bg-white/80 backdrop-blur-sm">
-        <CardHeader className="text-center pb-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-t-lg">
-          <div className="flex justify-center mb-6 relative">
-            <Avatar className="w-28 h-28 shadow-xl ring-4 ring-white">
-              {currentProfile.profileImage ? (
-                <AvatarImage 
-                  src={currentProfile.profileImage} 
-                  alt="Profile" 
-                />
-              ) : null}
-              <AvatarFallback className="text-2xl font-bold bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg">
-                {getInitials(currentProfile.firstName, currentProfile.lastName)}
-              </AvatarFallback>
-            </Avatar>
-            <label 
-              htmlFor="profile-upload" 
-              className="absolute -bottom-2 -right-2 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-full p-3 cursor-pointer hover:from-blue-600 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
-            >
-              <Camera className="w-4 h-4" />
-            </label>
-            <input
-              id="profile-upload"
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-              className="hidden"
-            />
-          </div>
-          <CardTitle className="text-2xl text-gray-800">
-            Dr. {currentProfile.firstName} {currentProfile.lastName}
-          </CardTitle>
-          <p className="text-blue-600 font-medium">{currentProfile.role}</p>
-        </CardHeader>
-        
-        <CardContent className="space-y-8 p-8">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-3">
-              <Label htmlFor="firstName" className="text-gray-700 font-medium">First Name</Label>
-              {isEditing ? (
-                <Input
-                  id="firstName"
-                  value={editedProfile.firstName}
-                  onChange={(e) => handleInputChange('firstName', e.target.value)}
-                  className="border-gray-200 focus:border-blue-500 focus:ring-blue-500/20 transition-all duration-300"
-                />
-              ) : (
-                <div className="p-3 bg-gradient-to-r from-gray-50 to-blue-50 rounded-lg border border-gray-100 font-medium text-gray-800">
-                  {profile.firstName}
+      
+      <div className="flex-1 p-6">
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+            {/* Header Section */}
+            <div className="bg-gradient-to-r from-indigo-500 to-purple-600 px-8 py-12">
+              <div className="flex items-center space-x-6">
+                <div className="relative">
+                  {profileImage ? (
+                    <img 
+                      src={profileImage} 
+                      alt="Profile" 
+                      className="w-24 h-24 rounded-full object-cover border-4 border-white shadow-lg"
+                    />
+                  ) : (
+                    <div className="w-24 h-24 rounded-full bg-white text-indigo-600 flex items-center justify-center text-2xl font-bold border-4 border-white shadow-lg">
+                      {getInitials("Amelia", "Stone")}
+                    </div>
+                  )}
+                  <button 
+                    onClick={() => document.getElementById('profile-upload')?.click()}
+                    className="absolute -bottom-2 -right-2 bg-white rounded-full p-2 shadow-lg border border-gray-200 hover:bg-gray-50 transition-colors duration-200"
+                  >
+                    <Camera className="h-4 w-4 text-gray-600" />
+                  </button>
+                  <input
+                    id="profile-upload"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    className="hidden"
+                  />
                 </div>
-              )}
+                <div className="text-white">
+                  <h1 className="text-3xl font-bold">Dr. Amelia Stone</h1>
+                  <p className="text-indigo-100 text-lg">General Dentistry</p>
+                  <p className="text-indigo-200 text-sm mt-1">DDS, University of California</p>
+                </div>
+              </div>
             </div>
 
-            <div className="space-y-3">
-              <Label htmlFor="lastName" className="text-gray-700 font-medium">Last Name</Label>
-              {isEditing ? (
-                <Input
-                  id="lastName"
-                  value={editedProfile.lastName}
-                  onChange={(e) => handleInputChange('lastName', e.target.value)}
-                  className="border-gray-200 focus:border-blue-500 focus:ring-blue-500/20 transition-all duration-300"
-                />
-              ) : (
-                <div className="p-3 bg-gradient-to-r from-gray-50 to-blue-50 rounded-lg border border-gray-100 font-medium text-gray-800">
-                  {profile.lastName}
+            {/* Content */}
+            <div className="p-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {/* Contact Information */}
+                <div>
+                  <h2 className="text-lg font-semibold text-gray-900 mb-4">Contact Information</h2>
+                  <div className="space-y-4">
+                    <div className="flex items-center space-x-3">
+                      <Mail className="h-5 w-5 text-gray-400" />
+                      <span className="text-gray-600">amelia.stone@dentalclinic.com</span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Phone className="h-5 w-5 text-gray-400" />
+                      <span className="text-gray-600">+1 (555) 123-4567</span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <MapPin className="h-5 w-5 text-gray-400" />
+                      <span className="text-gray-600">123 Medical Center Dr, San Francisco, CA</span>
+                    </div>
+                  </div>
                 </div>
-              )}
+
+                {/* Professional Details */}
+                <div>
+                  <h2 className="text-lg font-semibold text-gray-900 mb-4">Professional Details</h2>
+                  <div className="space-y-4">
+                    <div className="flex items-center space-x-3">
+                      <Award className="h-5 w-5 text-gray-400" />
+                      <span className="text-gray-600">License #: CA-DEN-12345</span>
+                    </div>
+                    <div className="flex items-center space-x-3">
+                      <Calendar className="h-5 w-5 text-gray-400" />
+                      <span className="text-gray-600">15 years of experience</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Specializations */}
+              <div className="mt-8">
+                <h2 className="text-lg font-semibold text-gray-900 mb-4">Specializations</h2>
+                <div className="flex flex-wrap gap-2">
+                  {["General Dentistry", "Cosmetic Dentistry", "Oral Surgery", "Pediatric Dentistry", "Orthodontics"].map((spec) => (
+                    <span key={spec} className="px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full text-sm font-medium">
+                      {spec}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="mt-8 flex space-x-4">
+                <Button className="bg-indigo-600 hover:bg-indigo-700 text-white">
+                  Edit Profile
+                </Button>
+                <Button variant="outline" className="border-gray-300 text-gray-700 hover:bg-gray-50">
+                  Change Password
+                </Button>
+              </div>
             </div>
           </div>
-
-          <div className="space-y-3">
-            <Label htmlFor="email" className="text-gray-700 font-medium">Email Address</Label>
-            {isEditing ? (
-              <Input
-                id="email"
-                type="email"
-                value={editedProfile.email}
-                onChange={(e) => handleInputChange('email', e.target.value)}
-                className="border-gray-200 focus:border-blue-500 focus:ring-blue-500/20 transition-all duration-300"
-              />
-            ) : (
-              <div className="p-3 bg-gradient-to-r from-gray-50 to-blue-50 rounded-lg border border-gray-100 font-medium text-gray-800">
-                {profile.email}
-              </div>
-            )}
-          </div>
-
-          <div className="space-y-3">
-            <Label htmlFor="phone" className="text-gray-700 font-medium">Phone Number</Label>
-            {isEditing ? (
-              <Input
-                id="phone"
-                type="tel"
-                value={editedProfile.phone}
-                onChange={(e) => handleInputChange('phone', e.target.value)}
-                className="border-gray-200 focus:border-blue-500 focus:ring-blue-500/20 transition-all duration-300"
-              />
-            ) : (
-              <div className="p-3 bg-gradient-to-r from-gray-50 to-blue-50 rounded-lg border border-gray-100 font-medium text-gray-800">
-                {profile.phone}
-              </div>
-            )}
-          </div>
-
-          <div className="space-y-3">
-            <Label htmlFor="role" className="text-gray-700 font-medium">Role</Label>
-            {isEditing ? (
-              <Input
-                id="role"
-                value={editedProfile.role}
-                onChange={(e) => handleInputChange('role', e.target.value)}
-                className="border-gray-200 focus:border-blue-500 focus:ring-blue-500/20 transition-all duration-300"
-              />
-            ) : (
-              <div className="p-3 bg-gradient-to-r from-gray-50 to-blue-50 rounded-lg border border-gray-100 font-medium text-gray-800">
-                {profile.role}
-              </div>
-            )}
-          </div>
-
-          <div className="flex gap-3 pt-6">
-            {isEditing ? (
-              <>
-                <Button 
-                  onClick={handleSave} 
-                  className="flex-1 bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]"
-                >
-                  <Save className="w-4 h-4 mr-2" />
-                  Save Changes
-                </Button>
-                <Button 
-                  variant="outline" 
-                  onClick={handleCancel} 
-                  className="flex-1 border-gray-200 hover:bg-gray-50 hover:border-gray-300 transition-all duration-300"
-                >
-                  <X className="w-4 h-4 mr-2" />
-                  Cancel
-                </Button>
-              </>
-            ) : (
-              <Button 
-                onClick={() => setIsEditing(true)} 
-                className="w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-[1.02]"
-              >
-                Edit Profile
-              </Button>
-            )}
-          </div>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }

@@ -38,14 +38,14 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen flex w-full bg-gradient-to-br from-slate-50 via-blue-50/30 to-indigo-50/50 overflow-hidden">
+    <div className="min-h-screen flex w-full bg-gray-50">
       <Sidebar 
         activeSection={activeSection} 
         onSectionChange={setActiveSection} 
         collapsed={sidebarCollapsed}
         onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
       />
-      <main className={`flex-1 bg-white/70 backdrop-blur-sm overflow-auto transition-all duration-300 ${sidebarCollapsed ? 'ml-16' : 'ml-80'} border-l border-white/50 shadow-inner`}>
+      <main className={`flex-1 bg-white overflow-auto transition-all duration-300 ${sidebarCollapsed ? 'ml-16' : 'ml-72'}`}>
         {renderContent()}
       </main>
     </div>
