@@ -1,3 +1,4 @@
+
 import { House, Calendar, Users, DollarSign, FlaskConical, Factory, Package, Settings, LogOut, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -71,7 +72,7 @@ export function Sidebar({
               <span className={`ml-3 font-medium text-sm transition-all duration-300 ${collapsed ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100'}`}>
                 {item.name}
               </span>
-              {isActive && <div className="absolute right-2 w-2 h-2 bg-indigo-600 rounded-full" />}
+              {isActive && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-600" />}
             </button>;
       })}
       </nav>
