@@ -1,3 +1,4 @@
+
 import { House, Calendar, Users, DollarSign, FlaskConical, Factory, Package, Settings, LogOut, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -56,7 +57,7 @@ export function Sidebar({
           onClick={() => onSectionChange('profile')}
           className="flex items-center gap-3 overflow-hidden hover:bg-slate-100 rounded-lg p-2 transition-colors duration-200"
         >
-          <div className={`bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 flex-shrink-0 transition-all duration-700 ease-in-out ${collapsed ? 'mx-auto' : ''}`} style={{
+          <div className="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10 flex-shrink-0" style={{
             backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuDrGSxRXtO4b-EytuNP0A4LNtrZa0fnukPxY1JRepZLoIOtA5b7EgUNZhv0MEA0EPzq5x6BnfKA2o5b_LtaryFle-MH5Xh9JdM5vq-YA8OQpQp0QnOg0ZFDfJA9c5XkgYCEDn0hNtu_arDZQWlVx_Nr-HgC9PWqy5Zbt7aOBclrO3_6dOwvGw8QirXqaD3vRHpXnm9-VHXjQeQ1ADlJlD5EEWdiparj4dIyPsUvIFJORr6eKf0400EVIgkZbRkmd9InBVAoUO6q53b_")'
           }} />
           <div className={`flex flex-col min-w-0 transition-all duration-700 ease-in-out ${collapsed ? 'opacity-0 max-w-0 overflow-hidden' : 'opacity-100 max-w-none delay-100'}`}>
@@ -73,17 +74,13 @@ export function Sidebar({
                 key={item.href} 
                 onClick={() => onSectionChange(item.href)} 
                 className={cn(
-                  "flex items-center text-sm font-medium transition-all duration-300 ease-in-out relative",
-                  collapsed ? "justify-center p-3 w-10 h-10 mx-auto" : "gap-3 px-3 py-2",
+                  "flex items-center text-sm font-medium transition-all duration-300 ease-in-out relative gap-3 px-3 py-2",
                   isActive ? "text-slate-900" : "text-slate-700 hover:text-slate-900"
                 )} 
                 title={collapsed ? item.name : undefined}
               >
                 {isActive && (
-                  <div className={cn(
-                    "absolute bg-slate-200 transition-all duration-300 ease-in-out",
-                    collapsed ? "inset-0 rounded-full" : "inset-0 rounded-full"
-                  )} />
+                  <div className="absolute inset-0 bg-slate-200 rounded-full transition-all duration-300 ease-in-out" />
                 )}
                 <item.icon className="h-6 w-6 flex-shrink-0 relative z-10" />
                 <span className={`truncate transition-all duration-700 ease-in-out relative z-10 ${collapsed ? 'opacity-0 max-w-0 overflow-hidden' : 'opacity-100 max-w-none delay-200'}`}>
@@ -100,10 +97,7 @@ export function Sidebar({
         {/* Toggle button */}
         <button 
           onClick={onToggleCollapse} 
-          className={cn(
-            "flex items-center text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-700 transition-all duration-300 ease-in-out rounded-md",
-            collapsed ? "justify-center p-3 w-10 h-10 mx-auto" : "gap-3 px-3 py-2 w-full"
-          )} 
+          className="flex items-center text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-700 transition-all duration-300 ease-in-out rounded-md gap-3 px-3 py-2 w-full"
           title={collapsed ? "Expand" : "Collapse"}
         >
           {collapsed ? <PanelLeftOpen className="h-5 w-5 flex-shrink-0" /> : <PanelLeftClose className="h-5 w-5 flex-shrink-0" />}
@@ -115,10 +109,7 @@ export function Sidebar({
         {/* Logout button */}
         <button 
           onClick={handleLogout} 
-          className={cn(
-            "flex items-center text-sm font-medium text-red-600 hover:bg-red-50 hover:text-red-700 transition-all duration-300 ease-in-out rounded-md",
-            collapsed ? "justify-center p-3 w-10 h-10 mx-auto" : "gap-3 px-3 py-2 w-full"
-          )} 
+          className="flex items-center text-sm font-medium text-red-600 hover:bg-red-50 hover:text-red-700 transition-all duration-300 ease-in-out rounded-md gap-3 px-3 py-2 w-full"
           title={collapsed ? "Logout" : undefined}
         >
           <LogOut className="h-5 w-5 flex-shrink-0" />
