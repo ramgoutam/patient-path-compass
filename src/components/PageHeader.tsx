@@ -12,7 +12,7 @@ export function PageHeader({
   description,
   action
 }: PageHeaderProps) {
-  return <div className="flex items-center justify-between p-6 py-[16px]">
+  return <div className="flex items-center justify-between p-6 py-[26px]">
       <div>
         <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
         {description && <p className="text-gray-600 mt-1">{description}</p>}
