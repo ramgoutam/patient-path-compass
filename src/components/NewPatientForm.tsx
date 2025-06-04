@@ -24,8 +24,27 @@ export function NewPatientForm({ onSubmit, onCancel }: NewPatientFormProps) {
     gender: 'male'
   });
 
+  const [errors, setErrors] = useState({
+    firstName: false,
+    lastName: false
+  });
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validate required fields
+    const newErrors = {
+      firstName: !formData.firstName.trim(),
+      lastName: !formData.lastName.trim()
+    };
+    
+    setErrors(newErrors);
+    
+    // Check if there are any errors
+    if (newErrors.firstName || newErrors.lastName) {
+      return; // Don't submit if there are errors
+    }
+    
     onSubmit(formData);
   };
 
@@ -34,6 +53,14 @@ export function NewPatientForm({ onSubmit, onCancel }: NewPatientFormProps) {
       ...prev,
       [field]: value
     }));
+    
+    // Clear error when user starts typing in a required field
+    if (field === 'firstName' || field === 'lastName') {
+      setErrors(prev => ({
+        ...prev,
+        [field]: false
+      }));
+    }
   };
 
   return (
@@ -45,21 +72,25 @@ export function NewPatientForm({ onSubmit, onCancel }: NewPatientFormProps) {
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="firstName">First Name</Label>
+              <Label htmlFor="firstName" className={errors.firstName ? "text-red-500" : ""}>
+                First Name <span className="text-red-500">*</span>
+              </Label>
               <Input
                 id="firstName"
                 value={formData.firstName}
                 onChange={(e) => handleInputChange('firstName', e.target.value)}
-                required
+                className={errors.firstName ? "border-red-500 focus-visible:ring-red-500" : ""}
               />
             </div>
             <div>
-              <Label htmlFor="lastName">Last Name</Label>
+              <Label htmlFor="lastName" className={errors.lastName ? "text-red-500" : ""}>
+                Last Name <span className="text-red-500">*</span>
+              </Label>
               <Input
                 id="lastName"
                 value={formData.lastName}
                 onChange={(e) => handleInputChange('lastName', e.target.value)}
-                required
+                className={errors.lastName ? "border-red-500 focus-visible:ring-red-500" : ""}
               />
             </div>
           </div>
@@ -67,7 +98,6 @@ export function NewPatientForm({ onSubmit, onCancel }: NewPatientFormProps) {
           <PhoneInput
             value={formData.phone}
             onChange={(value) => handleInputChange('phone', value)}
-            required
           />
 
           <div className="space-y-4">
@@ -78,7 +108,6 @@ export function NewPatientForm({ onSubmit, onCancel }: NewPatientFormProps) {
                 id="street"
                 value={formData.street}
                 onChange={(e) => handleInputChange('street', e.target.value)}
-                required
               />
             </div>
             <div className="grid grid-cols-2 gap-4">
@@ -88,7 +117,6 @@ export function NewPatientForm({ onSubmit, onCancel }: NewPatientFormProps) {
                   id="city"
                   value={formData.city}
                   onChange={(e) => handleInputChange('city', e.target.value)}
-                  required
                 />
               </div>
               <div>
@@ -98,7 +126,6 @@ export function NewPatientForm({ onSubmit, onCancel }: NewPatientFormProps) {
                   placeholder="CA"
                   value={formData.state}
                   onChange={(e) => handleInputChange('state', e.target.value)}
-                  required
                 />
               </div>
             </div>
@@ -109,7 +136,6 @@ export function NewPatientForm({ onSubmit, onCancel }: NewPatientFormProps) {
                 placeholder="12345"
                 value={formData.zipCode}
                 onChange={(e) => handleInputChange('zipCode', e.target.value)}
-                required
               />
             </div>
           </div>

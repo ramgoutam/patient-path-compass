@@ -108,7 +108,6 @@ export function PhoneInput({ value, onChange, required }: PhoneInputProps) {
           value={phoneNumber}
           onChange={(e) => handlePhoneChange(e.target.value)}
           className="flex-1"
-          required={required}
         />
       </div>
     </div>
