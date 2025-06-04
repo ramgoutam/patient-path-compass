@@ -50,7 +50,7 @@ export function Sidebar({
   return <div className={`fixed left-0 top-0 h-screen bg-white border-r border-gray-200 flex flex-col transition-all duration-300 z-10 shadow-sm ${collapsed ? 'w-16' : 'w-72'}`}>
       {/* Header */}
       <div className="p-4 border-b border-gray-80 my-[2px] mx-px px-0 py-0">
-        <button onClick={() => onSectionChange('profile')} className="flex items-center gap-3 w-full text-left hover:bg-gray-50 rounded-lg p-2 transition-colors duration-200 py-0 mx-0">
+        <button onClick={() => onSectionChange('profile')} className="flex items-center gap-3 w-full text-left hover:bg-gray-50 rounded-lg p-2 transition-colors duration-200 mx-0 py-[18px]">
           <div className="bg-indigo-600 text-white rounded-full size-10 flex-shrink-0 flex items-center justify-center font-semibold text-sm">
             {getInitials("Amelia", "Stone")}
           </div>
