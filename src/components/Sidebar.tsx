@@ -1,3 +1,4 @@
+
 import { House, Calendar, Users, DollarSign, FlaskConical, Factory, Package, Settings, LogOut, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 interface SidebarProps {
@@ -68,13 +69,13 @@ export function Sidebar({
         {navigation.map(item => {
         const isActive = activeSection === item.href;
         return <div key={item.href} className="relative">
-            <button onClick={() => onSectionChange(item.href)} className={cn("flex items-center w-full text-left px-3 py-4 rounded-lg transition-all duration-200", isActive ? "bg-indigo-50 text-indigo-700 border border-indigo-200" : "text-gray-600 hover:bg-gray-50 hover:text-gray-900")} title={collapsed ? item.name : undefined}>
+            <button onClick={() => onSectionChange(item.href)} className={cn("flex items-center w-full text-left px-3 py-4 rounded-lg transition-all duration-200 relative", isActive ? "bg-indigo-50 text-indigo-700 border border-indigo-200" : "text-gray-600 hover:bg-gray-50 hover:text-gray-900")} title={collapsed ? item.name : undefined}>
+              {isActive && <div className="absolute left-0 top-1 bottom-1 w-1 bg-indigo-600 rounded-r-full" />}
               <item.icon className="h-5 w-5 flex-shrink-0" />
               <span className={`ml-3 font-medium text-sm transition-all duration-300 ${collapsed ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100'}`}>
                 {item.name}
               </span>
             </button>
-            {isActive && <div className="absolute bottom-2 left-2 right-2 h-1 bg-indigo-600 rounded-full" />}
           </div>;
       })}
       </nav>
