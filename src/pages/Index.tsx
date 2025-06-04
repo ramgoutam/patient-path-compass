@@ -4,6 +4,7 @@ import { Sidebar } from "@/components/Sidebar";
 import { DashboardPage } from "./DashboardPage";
 import { AppointmentsPage } from "./AppointmentsPage";
 import { PatientsPage } from "./PatientsPage";
+import { PatientProfilePage } from "./PatientProfilePage";
 import { LabPage } from "./LabPage";
 import { ManufacturingPage } from "./ManufacturingPage";
 import { InventoryPage } from "./InventoryPage";
