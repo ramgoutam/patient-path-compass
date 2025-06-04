@@ -1,13 +1,11 @@
 import { House, Calendar, Users, DollarSign, FlaskConical, Factory, Package, Settings, LogOut, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import { cn } from "@/lib/utils";
-
 interface SidebarProps {
   activeSection: string;
   onSectionChange: (section: string) => void;
   collapsed: boolean;
   onToggleCollapse: () => void;
 }
-
 const navigation = [{
   name: "Dashboard",
   href: "dashboard",
@@ -37,7 +35,6 @@ const navigation = [{
   href: "settings",
   icon: Settings
 }];
-
 export function Sidebar({
   activeSection,
   onSectionChange,
@@ -48,11 +45,9 @@ export function Sidebar({
     console.log("Logging out...");
     // Add logout logic here
   };
-
   const getInitials = (firstName: string, lastName: string) => {
     return `${firstName.charAt(0)}${lastName.charAt(0)}`.toUpperCase();
   };
-
   return <div className={`fixed left-0 top-0 h-screen bg-slate-50 flex flex-col transition-all duration-700 ease-in-out z-10 ${collapsed ? 'w-16' : 'w-80'}`}>
       <div className="flex flex-col gap-4 flex-1 p-4 rounded-xl py-[18px] my-0 mx-0 px-[8px]">
         <button onClick={() => onSectionChange('profile')} className="flex items-center gap-3 overflow-hidden hover:bg-slate-100 rounded-lg p-2 transition-colors duration-200">
@@ -81,7 +76,7 @@ export function Sidebar({
       </div>
       
       
-      <div className="p-4 border-t border-slate-200 space-y-2">
+      <div className="p-4 border-t border-slate-200 space-y-2 px-[8px]">
         {/* Toggle button */}
         <button onClick={onToggleCollapse} className="flex items-center text-sm font-medium text-slate-600 hover:bg-slate-100 hover:text-slate-700 transition-all duration-300 ease-in-out rounded-md gap-3 px-3 py-2 w-full" title={collapsed ? "Expand" : "Collapse"}>
           {collapsed ? <PanelLeftOpen className="h-5 w-5 flex-shrink-0" /> : <PanelLeftClose className="h-5 w-5 flex-shrink-0" />}
