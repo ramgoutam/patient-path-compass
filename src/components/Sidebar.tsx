@@ -1,5 +1,6 @@
-import { House, Calendar, Users, DollarSign, FlaskConical, Factory, Package, Settings, LogOut, ChevronLeft, ChevronRight } from "lucide-react";
+import { House, Calendar, Users, DollarSign, FlaskConical, Factory, Package, Settings, LogOut, Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
+
 interface SidebarProps {
   activeSection: string;
   onSectionChange: (section: string) => void;
@@ -78,7 +79,7 @@ export function Sidebar({
       {/* Footer */}
       <div className="p-4 border-t border-gray-100 space-y-1 px-[11px]">
         <button onClick={onToggleCollapse} className="flex items-center w-full text-left px-3 py-2.5 rounded-lg text-gray-600 hover:bg-gray-50 hover:text-gray-900 transition-colors duration-200" title={collapsed ? "Expand" : "Collapse"}>
-          {collapsed ? <ChevronRight className="h-5 w-5 flex-shrink-0" /> : <ChevronLeft className="h-5 w-5 flex-shrink-0" />}
+          {collapsed ? <Menu className="h-5 w-5 flex-shrink-0" /> : <X className="h-5 w-5 flex-shrink-0" />}
           <span className={`ml-3 font-medium text-sm transition-all duration-300 ${collapsed ? 'opacity-0 w-0 overflow-hidden' : 'opacity-100'}`}>
             {collapsed ? "Expand" : "Collapse"}
           </span>
