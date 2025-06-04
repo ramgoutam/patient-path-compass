@@ -1,6 +1,5 @@
 import { House, Calendar, Users, DollarSign, FlaskConical, Factory, Package, Settings, LogOut, ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-
 interface SidebarProps {
   activeSection: string;
   onSectionChange: (section: string) => void;
@@ -63,7 +62,7 @@ export function Sidebar({
       </div>
       
       {/* Navigation */}
-      <nav className="flex-1 p-4 space-y-1 px-[5px]">
+      <nav className="flex-1 p-4 space-y-1 px-[9px]">
         {navigation.map(item => {
         const isActive = activeSection === item.href;
         return <div key={item.href} className="relative">
