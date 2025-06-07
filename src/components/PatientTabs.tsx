@@ -8,12 +8,10 @@ interface PatientTabsProps {
 
 const tabs = [
   { id: "all", label: "All" },
-  { id: "active", label: "Active" },
-  { id: "inactive", label: "Inactive" },
-  { id: "scheduled", label: "Scheduled" },
-  { id: "unscheduled", label: "Unscheduled" },
-  { id: "overdue", label: "Overdue" },
-  { id: "archived", label: "Archived" },
+  { id: "not-started", label: "Treatment Not Started" },
+  { id: "in-progress", label: "Treatment In Progress" },
+  { id: "completed", label: "Treatment Completed" },
+  { id: "deceased", label: "Patient Deceased" },
 ];
 
 export function PatientTabs({ activeTab, onTabChange }: PatientTabsProps) {
