@@ -1,11 +1,15 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PhoneInput } from "./PhoneInput";
 import { AddressAutocomplete } from "./AddressAutocomplete";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 interface NewPatientFormProps {
   onSubmit: (patientData: any) => void;
@@ -16,7 +20,12 @@ export function NewPatientForm({ onSubmit, onCancel }: NewPatientFormProps) {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
+    dateOfBirth: '',
     phone: '',
+    treatmentType: '',
+    lastVisit: '',
+    nextAppointment: '',
+    status: 'Treatment not started',
     street: '',
     city: '',
     state: '',
@@ -26,26 +35,75 @@ export function NewPatientForm({ onSubmit, onCancel }: NewPatientFormProps) {
 
   const [errors, setErrors] = useState({
     firstName: false,
-    lastName: false
+    lastName: false,
+    dateOfBirth: false
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
     // Validate required fields
     const newErrors = {
       firstName: !formData.firstName.trim(),
-      lastName: !formData.lastName.trim()
+      lastName: !formData.lastName.trim(),
+      dateOfBirth: !formData.dateOfBirth.trim()
     };
     
     setErrors(newErrors);
     
     // Check if there are any errors
-    if (newErrors.firstName || newErrors.lastName) {
-      return; // Don't submit if there are errors
+    if (newErrors.firstName || newErrors.lastName || newErrors.dateOfBirth) {
+      return;
     }
     
-    onSubmit(formData);
+    try {
+      setIsSubmitting(true);
+      
+      const patientData = {
+        name: `${formData.firstName} ${formData.lastName}`,
+        date_of_birth: formData.dateOfBirth,
+        phone: formData.phone || null,
+        treatment_type: formData.treatmentType || null,
+        last_visit: formData.lastVisit || null,
+        next_appointment: formData.nextAppointment || null,
+        status: formData.status
+      };
+
+      const { data, error } = await supabase
+        .from('patients')
+        .insert([patientData])
+        .select()
+        .single();
+
+      if (error) {
+        console.error('Error creating patient:', error);
+        toast({
+          title: "Error",
+          description: "Failed to create patient",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      toast({
+        title: "Success",
+        description: "Patient created successfully",
+      });
+
+      onSubmit(data);
+    } catch (error) {
+      console.error('Error:', error);
+      toast({
+        title: "Error",
+        description: "Failed to create patient",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleInputChange = (field: string, value: string) => {
@@ -55,7 +113,7 @@ export function NewPatientForm({ onSubmit, onCancel }: NewPatientFormProps) {
     }));
     
     // Clear error when user starts typing in a required field
-    if (field === 'firstName' || field === 'lastName') {
+    if (field === 'firstName' || field === 'lastName' || field === 'dateOfBirth') {
       setErrors(prev => ({
         ...prev,
         [field]: false
@@ -95,10 +153,80 @@ export function NewPatientForm({ onSubmit, onCancel }: NewPatientFormProps) {
             </div>
           </div>
 
+          <div>
+            <Label htmlFor="dateOfBirth" className={errors.dateOfBirth ? "text-red-500" : ""}>
+              Date of Birth <span className="text-red-500">*</span>
+            </Label>
+            <Input
+              id="dateOfBirth"
+              type="date"
+              value={formData.dateOfBirth}
+              onChange={(e) => handleInputChange('dateOfBirth', e.target.value)}
+              className={errors.dateOfBirth ? "border-red-500 focus-visible:ring-red-500" : ""}
+            />
+          </div>
+
           <PhoneInput
             value={formData.phone}
             onChange={(value) => handleInputChange('phone', value)}
           />
+
+          <div>
+            <Label htmlFor="treatmentType">Treatment Type</Label>
+            <Select value={formData.treatmentType} onValueChange={(value) => handleInputChange('treatmentType', value)}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select treatment type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Orthodontics">Orthodontics</SelectItem>
+                <SelectItem value="Dental Cleaning">Dental Cleaning</SelectItem>
+                <SelectItem value="Root Canal">Root Canal</SelectItem>
+                <SelectItem value="Dental Implant">Dental Implant</SelectItem>
+                <SelectItem value="Teeth Whitening">Teeth Whitening</SelectItem>
+                <SelectItem value="Periodontal Treatment">Periodontal Treatment</SelectItem>
+                <SelectItem value="Crown Replacement">Crown Replacement</SelectItem>
+                <SelectItem value="Wisdom Tooth Extraction">Wisdom Tooth Extraction</SelectItem>
+                <SelectItem value="Dental Bridge">Dental Bridge</SelectItem>
+                <SelectItem value="Cavity Filling">Cavity Filling</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label htmlFor="lastVisit">Last Visit</Label>
+              <Input
+                id="lastVisit"
+                type="date"
+                value={formData.lastVisit}
+                onChange={(e) => handleInputChange('lastVisit', e.target.value)}
+              />
+            </div>
+            <div>
+              <Label htmlFor="nextAppointment">Next Appointment</Label>
+              <Input
+                id="nextAppointment"
+                type="date"
+                value={formData.nextAppointment}
+                onChange={(e) => handleInputChange('nextAppointment', e.target.value)}
+              />
+            </div>
+          </div>
+
+          <div>
+            <Label htmlFor="status">Status</Label>
+            <Select value={formData.status} onValueChange={(value) => handleInputChange('status', value)}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="Treatment not started">Treatment not started</SelectItem>
+                <SelectItem value="Treatment in progress">Treatment in progress</SelectItem>
+                <SelectItem value="Treatment completed">Treatment completed</SelectItem>
+                <SelectItem value="Patient deceased">Patient deceased</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
           <AddressAutocomplete
             street={formData.street}
@@ -127,10 +255,10 @@ export function NewPatientForm({ onSubmit, onCancel }: NewPatientFormProps) {
           </div>
 
           <div className="flex gap-4 pt-4">
-            <Button type="submit" className="flex-1">
-              Add Patient
+            <Button type="submit" className="flex-1" disabled={isSubmitting}>
+              {isSubmitting ? "Adding Patient..." : "Add Patient"}
             </Button>
-            <Button type="button" variant="outline" onClick={onCancel} className="flex-1">
+            <Button type="button" variant="outline" onClick={onCancel} className="flex-1" disabled={isSubmitting}>
               Cancel
             </Button>
           </div>

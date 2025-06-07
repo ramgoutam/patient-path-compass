@@ -15,6 +15,7 @@ export function PatientsPage({ onNavigateToProfile }: PatientsPageProps) {
   const [searchTerm, setSearchTerm] = useState("");
   const [activeTab, setActiveTab] = useState("all");
   const [showNewPatientForm, setShowNewPatientForm] = useState(false);
+  const [refreshTrigger, setRefreshTrigger] = useState(0);
 
   const handleNewPatient = () => {
     setShowNewPatientForm(true);
@@ -23,7 +24,8 @@ export function PatientsPage({ onNavigateToProfile }: PatientsPageProps) {
   const handleFormSubmit = (patientData: any) => {
     console.log("New patient data:", patientData);
     setShowNewPatientForm(false);
-    // Here you would typically save the patient data
+    // Trigger a refresh of the patients table
+    setRefreshTrigger(prev => prev + 1);
   };
 
   const handleFormCancel = () => {
@@ -57,6 +59,7 @@ export function PatientsPage({ onNavigateToProfile }: PatientsPageProps) {
           <PatientsTable 
             searchTerm={searchTerm}
             activeTab={activeTab}
+            refreshTrigger={refreshTrigger}
           />
         </div>
       </div>

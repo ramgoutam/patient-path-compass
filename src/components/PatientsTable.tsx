@@ -1,130 +1,69 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 
 interface Patient {
-  id: number;
+  id: string;
   name: string;
-  dateOfBirth: string;
-  phone: string;
-  treatmentType: string;
-  lastVisit: string;
-  nextAppointment: string;
+  date_of_birth: string;
+  phone: string | null;
+  treatment_type: string | null;
+  last_visit: string | null;
+  next_appointment: string | null;
   status: string;
 }
-
-const mockPatients: Patient[] = [
-  {
-    id: 1,
-    name: "Owen Turner",
-    dateOfBirth: "1985-03-15",
-    phone: "(555) 123-4567",
-    treatmentType: "Orthodontics",
-    lastVisit: "2023-11-20",
-    nextAppointment: "2024-05-10",
-    status: "Treatment in progress",
-  },
-  {
-    id: 2,
-    name: "Chloe Bennett",
-    dateOfBirth: "1992-07-22",
-    phone: "(555) 987-6543",
-    treatmentType: "Dental Cleaning",
-    lastVisit: "2023-12-05",
-    nextAppointment: "2024-06-15",
-    status: "Treatment not started",
-  },
-  {
-    id: 3,
-    name: "Lucas Carter",
-    dateOfBirth: "1978-11-10",
-    phone: "(555) 246-8013",
-    treatmentType: "Root Canal",
-    lastVisit: "2024-01-12",
-    nextAppointment: "2024-07-20",
-    status: "Treatment in progress",
-  },
-  {
-    id: 4,
-    name: "Emily Morgan",
-    dateOfBirth: "1989-05-03",
-    phone: "(555) 369-1470",
-    treatmentType: "Dental Implant",
-    lastVisit: "2023-10-15",
-    nextAppointment: "2024-04-25",
-    status: "Treatment completed",
-  },
-  {
-    id: 5,
-    name: "Caleb Hayes",
-    dateOfBirth: "1995-09-18",
-    phone: "(555) 753-9512",
-    treatmentType: "Teeth Whitening",
-    lastVisit: "2023-11-01",
-    nextAppointment: "2024-05-05",
-    status: "Treatment not started",
-  },
-  {
-    id: 6,
-    name: "Sophia Reed",
-    dateOfBirth: "1982-02-28",
-    phone: "(555) 468-2581",
-    treatmentType: "Periodontal Treatment",
-    lastVisit: "2023-12-20",
-    nextAppointment: "2024-06-01",
-    status: "Treatment in progress",
-  },
-  {
-    id: 7,
-    name: "Henry Cole",
-    dateOfBirth: "1975-06-07",
-    phone: "(555) 864-1234",
-    treatmentType: "Crown Replacement",
-    lastVisit: "2024-01-05",
-    nextAppointment: "2024-07-10",
-    status: "Treatment completed",
-  },
-  {
-    id: 8,
-    name: "Isabella Price",
-    dateOfBirth: "1998-10-25",
-    phone: "(555) 579-3692",
-    treatmentType: "Wisdom Tooth Extraction",
-    lastVisit: "2023-10-20",
-    nextAppointment: "2024-04-30",
-    status: "Treatment not started",
-  },
-  {
-    id: 9,
-    name: "Ryan Foster",
-    dateOfBirth: "1980-04-12",
-    phone: "(555) 975-2468",
-    treatmentType: "Dental Bridge",
-    lastVisit: "2023-11-15",
-    nextAppointment: "2024-05-15",
-    status: "Treatment in progress",
-  },
-  {
-    id: 10,
-    name: "Lily Brooks",
-    dateOfBirth: "1990-08-05",
-    phone: "(555) 682-1597",
-    treatmentType: "Cavity Filling",
-    lastVisit: "2023-12-10",
-    nextAppointment: "2024-06-10",
-    status: "Patient deceased",
-  },
-];
 
 interface PatientsTableProps {
   searchTerm: string;
   activeTab: string;
+  refreshTrigger?: number;
 }
 
-export function PatientsTable({ searchTerm, activeTab }: PatientsTableProps) {
-  const filteredPatients = mockPatients.filter(patient => {
+export function PatientsTable({ searchTerm, activeTab, refreshTrigger }: PatientsTableProps) {
+  const [patients, setPatients] = useState<Patient[]>([]);
+  const [loading, setLoading] = useState(true);
+  const { toast } = useToast();
+
+  useEffect(() => {
+    fetchPatients();
+  }, [refreshTrigger]);
+
+  const fetchPatients = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('patients')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching patients:', error);
+        toast({
+          title: "Error",
+          description: "Failed to fetch patients",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      setPatients(data || []);
+    } catch (error) {
+      console.error('Error:', error);
+      toast({
+        title: "Error",
+        description: "Failed to fetch patients",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const filteredPatients = patients.filter(patient => {
     const matchesSearch = patient.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         patient.phone.includes(searchTerm);
+                         (patient.phone && patient.phone.includes(searchTerm));
     
     if (activeTab === "all") return matchesSearch;
     
@@ -154,6 +93,18 @@ export function PatientsTable({ searchTerm, activeTab }: PatientsTableProps) {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="px-4 py-3">
+        <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
+          <div className="p-8 text-center">
+            <p className="text-slate-600">Loading patients...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="px-4 py-3">
       <div className="overflow-hidden rounded-xl border border-slate-200 bg-white">
@@ -170,24 +121,32 @@ export function PatientsTable({ searchTerm, activeTab }: PatientsTableProps) {
             </tr>
           </thead>
           <tbody>
-            {filteredPatients.map((patient) => (
-              <tr key={patient.id} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                <td className="px-4 py-4 text-slate-900 text-sm font-medium">{patient.name}</td>
-                <td className="px-4 py-4 text-slate-600 text-sm">{patient.dateOfBirth}</td>
-                <td className="px-4 py-4 text-slate-600 text-sm">{patient.phone}</td>
-                <td className="px-4 py-4 text-slate-600 text-sm">{patient.treatmentType}</td>
-                <td className="px-4 py-4 text-slate-600 text-sm">{patient.lastVisit}</td>
-                <td className="px-4 py-4 text-slate-600 text-sm">{patient.nextAppointment}</td>
-                <td className="px-4 py-4">
-                  <Button
-                    className={`${getStatusButtonColor(patient.status)} rounded-full px-4 h-8 text-sm font-medium w-full`}
-                    variant="secondary"
-                  >
-                    {patient.status}
-                  </Button>
+            {filteredPatients.length === 0 ? (
+              <tr>
+                <td colSpan={7} className="px-4 py-8 text-center text-slate-500">
+                  {patients.length === 0 ? "No patients found. Add your first patient!" : "No patients match your search criteria."}
                 </td>
               </tr>
-            ))}
+            ) : (
+              filteredPatients.map((patient) => (
+                <tr key={patient.id} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+                  <td className="px-4 py-4 text-slate-900 text-sm font-medium">{patient.name}</td>
+                  <td className="px-4 py-4 text-slate-600 text-sm">{patient.date_of_birth}</td>
+                  <td className="px-4 py-4 text-slate-600 text-sm">{patient.phone || '-'}</td>
+                  <td className="px-4 py-4 text-slate-600 text-sm">{patient.treatment_type || '-'}</td>
+                  <td className="px-4 py-4 text-slate-600 text-sm">{patient.last_visit || '-'}</td>
+                  <td className="px-4 py-4 text-slate-600 text-sm">{patient.next_appointment || '-'}</td>
+                  <td className="px-4 py-4">
+                    <Button
+                      className={`${getStatusButtonColor(patient.status)} rounded-full px-4 h-8 text-sm font-medium w-full`}
+                      variant="secondary"
+                    >
+                      {patient.status}
+                    </Button>
+                  </td>
+                </tr>
+              ))
+            )}
           </tbody>
         </table>
       </div>
